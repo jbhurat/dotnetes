@@ -1,0 +1,40 @@
+{
+   "kind":"ReplicationController",
+   "apiVersion":"v1",
+   "metadata":{
+      "name":"guestbook",
+      "labels":{
+         "app":"guestbook"
+      }
+   },
+   "spec":{
+      "replicas":3,
+      "selector":{
+         "app":"guestbook"
+      },
+      "template":{
+         "metadata":{
+            "labels":{
+               "app":"guestbook"
+            }
+         },
+         "spec":{
+            "containers":[
+               {
+                  "name":"guestbook",
+                  "image":"guestbook:v0.3",
+                  "ports":[
+                     {
+                        "name":"http-server",
+                        "containerPort":3000
+                     }
+                  ]
+               }
+            ],
+            "nodeSelector":{
+              "beta.kubernetes.io/os": "windows"
+            }
+         }
+      }
+   }
+}
