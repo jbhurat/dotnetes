@@ -1,0 +1,43 @@
+{
+   "kind":"ReplicationController",
+   "apiVersion":"v1",
+   "metadata":{
+      "name":"redis-slave",
+      "labels":{
+         "app":"redis",
+         "role":"slave"
+      }
+   },
+   "spec":{
+      "replicas":2,
+      "selector":{
+         "app":"redis",
+         "role":"slave"
+      },
+      "template":{
+         "metadata":{
+            "labels":{
+               "app":"redis",
+               "role":"slave"
+            }
+         },
+         "spec":{
+            "containers":[
+               {
+                  "name":"redis-slave",
+                  "image":"redis-slave:windowsservercore-10.0.14300.1030",
+                  "ports":[
+                     {
+                        "name":"redis-server",
+                        "containerPort":6379
+                     }
+                  ]
+               }
+            ],
+            "nodeSelector":{
+              "beta.kubernetes.io/os": "windows"
+            }
+         }
+      }
+   }
+}
