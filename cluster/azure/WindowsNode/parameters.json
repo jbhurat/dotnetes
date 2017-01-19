@@ -1,0 +1,45 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentParameters.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "adminUsername": {
+            "value": "Win03KubeWin03Win03"
+        },
+        "adminPassword": {
+            "value": "p@ssw0rd!"
+        },
+        "machineName": {
+            "value": "KubeWin03"
+        },
+        "ethernet1Name": {
+            "value": "Ethernet6"
+        },
+        "privateIpAddress": {
+            "value": "10.0.1.16"
+        },
+        "privateIpAddressTransparent": {
+            "value": "10.0.1.17"
+        },
+        "ethernet2Name": {
+            "value": "Ethernet7"
+        },
+        "routesName": {
+            "value": "UDR-Win01"
+        },
+        "routeName": {
+            "value": "RouteToWin03"
+            
+        },"addressPrefix": {
+            "value": "192.168.1.0/24"
+        },
+        "virtualNetworkName": {
+            "value": "AzureKubeNetDemo"
+        },
+        "virtualNetworkPrefix": {
+            "value": "10.0.1.0/24"
+        },
+        "storageAccountName": {
+            "value": "azurekubestoredemo"
+        }
+    }
+}
