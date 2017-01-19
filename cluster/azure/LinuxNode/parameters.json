@@ -1,0 +1,39 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentParameters.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "adminUsername": {
+            "value": "Lin02KubeLin02Lin02"
+        },
+        "adminPassword": {
+            "value": "p@ssw0rd!"
+        },
+        "machineName": {
+            "value": "KubeLin02"
+        },
+        "ethernet1Name": {
+            "value": "Ethernet8"
+        },
+        "privateIpAddress": {
+            "value": "10.0.1.18"
+        },
+        "routesName": {
+            "value": "UDR-Win01"
+        },
+        "routeName": {
+            "value": "RouteToLin02"
+            
+        },"addressPrefix": {
+            "value": "192.168.1.0/24"
+        },
+        "virtualNetworkName": {
+            "value": "AzureKubeNetDemo"
+        },
+        "virtualNetworkPrefix": {
+            "value": "10.0.1.0/24"
+        },
+        "storageAccountName": {
+            "value": "azurekubestoredemo"
+        }
+    }
+}
