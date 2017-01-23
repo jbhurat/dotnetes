@@ -1,0 +1,533 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "virtualMachines_KubeLin01_adminPassword": {
+            "defaultValue": null,
+            "type": "SecureString"
+        },
+        "virtualMachines_KubeWin01_adminPassword": {
+            "defaultValue": null,
+            "type": "SecureString"
+        },
+        "virtualMachines_KubeWin02_adminPassword": {
+            "defaultValue": null,
+            "type": "SecureString"
+        },
+        "virtualMachines_KubeLin01_name": {
+            "defaultValue": "KubeLin01",
+            "type": "String"
+        },
+        "virtualMachines_KubeWin01_name": {
+            "defaultValue": "KubeWin01",
+            "type": "String"
+        },
+        "virtualMachines_KubeWin02_name": {
+            "defaultValue": "KubeWin02",
+            "type": "String"
+        },
+        "networkInterfaces_Ethernet1_name": {
+            "defaultValue": "Ethernet1",
+            "type": "String"
+        },
+        "networkInterfaces_Ethernet2_name": {
+            "defaultValue": "Ethernet2",
+            "type": "String"
+        },
+        "networkInterfaces_Ethernet3_name": {
+            "defaultValue": "Ethernet3",
+            "type": "String"
+        },
+        "networkInterfaces_Ethernet4_name": {
+            "defaultValue": "Ethernet4",
+            "type": "String"
+        },
+        "networkInterfaces_Ethernet5_name": {
+            "defaultValue": "Ethernet5",
+            "type": "String"
+        },
+        "publicIPAddresses_Ethernet1_name": {
+            "defaultValue": "Ethernet1",
+            "type": "String"
+        },
+        "publicIPAddresses_Ethernet3_name": {
+            "defaultValue": "Ethernet3",
+            "type": "String"
+        },
+        "publicIPAddresses_Ethernet5_name": {
+            "defaultValue": "Ethernet5",
+            "type": "String"
+        },
+        "routeTables_UDR_Win01_name": {
+            "defaultValue": "UDR-Win01",
+            "type": "String"
+        },
+        "virtualNetworks_AzureKubeNet_name": {
+            "defaultValue": "AzureKubeNet",
+            "type": "String"
+        },
+        "storageAccounts_azurekubestore_name": {
+            "defaultValue": "azurekubestore",
+            "type": "String"
+        }
+    },
+    "variables": {},
+    "resources": [
+        {
+            "comments": "Generalized from resource: '/subscriptions/1d7f6778-2765-4665-aecb-ef6d19443eef/resourceGroups/AzureKubeDemo/providers/Microsoft.Compute/virtualMachines/KubeLin01'.",
+            "type": "Microsoft.Compute/virtualMachines",
+            "name": "[parameters('virtualMachines_KubeLin01_name')]",
+            "apiVersion": "2015-06-15",
+            "location": "eastus",
+            "properties": {
+                "hardwareProfile": {
+                    "vmSize": "Standard_D2"
+                },
+                "storageProfile": {
+                    "imageReference": {
+                        "publisher": "OpenLogic",
+                        "offer": "Centos",
+                        "sku": "7.0",
+                        "version": "7.0.20160309"
+                    },
+                    "osDisk": {
+                        "name": "[concat(parameters('virtualMachines_KubeLin01_name'),'OSDisk')]",
+                        "createOption": "FromImage",
+                        "vhd": {
+                            "uri": "[concat('https', '://', parameters('storageAccounts_azurekubestore_name'), '.blob.core.windows.net', concat('/vhds/', parameters('virtualMachines_KubeLin01_name'),'OSDisk.vhd'))]"
+                        },
+                        "caching": "ReadWrite"
+                    },
+                    "dataDisks": []
+                },
+                "osProfile": {
+                    "computerName": "[parameters('virtualMachines_KubeLin01_name')]",
+                    "adminUsername": "[concat(parameters('virtualMachines_KubeLin01_name'),'kubelin01', parameters('virtualMachines_KubeLin01_name'))]",
+                    "linuxConfiguration": {
+                        "disablePasswordAuthentication": false
+                    },
+                    "secrets": [],
+                    "adminPassword": "[parameters('virtualMachines_KubeLin01_adminPassword')]"
+                },
+                "networkProfile": {
+                    "networkInterfaces": [
+                        {
+                            "properties": {
+                                "primary": true
+                            },
+                            "id": "[resourceId('Microsoft.Network/networkInterfaces', parameters('networkInterfaces_Ethernet5_name'))]"
+                        }
+                    ]
+                }
+            },
+            "resources": [],
+            "dependsOn": [
+                "[resourceId('Microsoft.Storage/storageAccounts', parameters('storageAccounts_azurekubestore_name'))]",
+                "[resourceId('Microsoft.Network/networkInterfaces', parameters('networkInterfaces_Ethernet5_name'))]"
+            ]
+        },
+        {
+            "comments": "Generalized from resource: '/subscriptions/1d7f6778-2765-4665-aecb-ef6d19443eef/resourceGroups/AzureKubeDemo/providers/Microsoft.Compute/virtualMachines/KubeWin01'.",
+            "type": "Microsoft.Compute/virtualMachines",
+            "name": "[parameters('virtualMachines_KubeWin01_name')]",
+            "apiVersion": "2015-06-15",
+            "location": "eastus",
+            "properties": {
+                "hardwareProfile": {
+                    "vmSize": "Standard_D2"
+                },
+                "storageProfile": {
+                    "imageReference": {
+                        "publisher": "MicrosoftWindowsServer",
+                        "offer": "WindowsServer",
+                        "sku": "2016-Technical-Preview-with-Containers",
+                        "version": "5.0.20160920"
+                    },
+                    "osDisk": {
+                        "name": "[concat(parameters('virtualMachines_KubeWin01_name'),'OSDisk')]",
+                        "createOption": "FromImage",
+                        "vhd": {
+                            "uri": "[concat('https', '://', parameters('storageAccounts_azurekubestore_name'), '.blob.core.windows.net', concat('/vhds/', parameters('virtualMachines_KubeWin01_name'),'OSDisk.vhd'))]"
+                        },
+                        "caching": "ReadWrite"
+                    },
+                    "dataDisks": []
+                },
+                "osProfile": {
+                    "computerName": "[parameters('virtualMachines_KubeWin01_name')]",
+                    "adminUsername": "[concat(parameters('virtualMachines_KubeWin01_name'),'kubewin01', parameters('virtualMachines_KubeWin01_name'))]",
+                    "windowsConfiguration": {
+                        "provisionVMAgent": true,
+                        "enableAutomaticUpdates": true
+                    },
+                    "secrets": [],
+                    "adminPassword": "[parameters('virtualMachines_KubeWin01_adminPassword')]"
+                },
+                "networkProfile": {
+                    "networkInterfaces": [
+                        {
+                            "properties": {
+                                "primary": true
+                            },
+                            "id": "[resourceId('Microsoft.Network/networkInterfaces', parameters('networkInterfaces_Ethernet1_name'))]"
+                        },
+                        {
+                            "properties": {
+                                "primary": false
+                            },
+                            "id": "[resourceId('Microsoft.Network/networkInterfaces', parameters('networkInterfaces_Ethernet2_name'))]"
+                        }
+                    ]
+                }
+            },
+            "resources": [],
+            "dependsOn": [
+                "[resourceId('Microsoft.Storage/storageAccounts', parameters('storageAccounts_azurekubestore_name'))]",
+                "[resourceId('Microsoft.Network/networkInterfaces', parameters('networkInterfaces_Ethernet1_name'))]",
+                "[resourceId('Microsoft.Network/networkInterfaces', parameters('networkInterfaces_Ethernet2_name'))]"
+            ]
+        },
+        {
+            "comments": "Generalized from resource: '/subscriptions/1d7f6778-2765-4665-aecb-ef6d19443eef/resourceGroups/AzureKubeDemo/providers/Microsoft.Compute/virtualMachines/KubeWin02'.",
+            "type": "Microsoft.Compute/virtualMachines",
+            "name": "[parameters('virtualMachines_KubeWin02_name')]",
+            "apiVersion": "2015-06-15",
+            "location": "eastus",
+            "properties": {
+                "hardwareProfile": {
+                    "vmSize": "Standard_D2"
+                },
+                "storageProfile": {
+                    "imageReference": {
+                        "publisher": "MicrosoftWindowsServer",
+                        "offer": "WindowsServer",
+                        "sku": "2016-Technical-Preview-with-Containers",
+                        "version": "5.0.20160920"
+                    },
+                    "osDisk": {
+                        "name": "[concat(parameters('virtualMachines_KubeWin02_name'),'OSDisk')]",
+                        "createOption": "FromImage",
+                        "vhd": {
+                            "uri": "[concat('https', '://', parameters('storageAccounts_azurekubestore_name'), '.blob.core.windows.net', concat('/vhds/', parameters('virtualMachines_KubeWin02_name'),'OSDisk.vhd'))]"
+                        },
+                        "caching": "ReadWrite"
+                    },
+                    "dataDisks": []
+                },
+                "osProfile": {
+                    "computerName": "[parameters('virtualMachines_KubeWin02_name')]",
+                    "adminUsername": "[concat(parameters('virtualMachines_KubeWin02_name'),'kubewin02', parameters('virtualMachines_KubeWin02_name'))]",
+                    "windowsConfiguration": {
+                        "provisionVMAgent": true,
+                        "enableAutomaticUpdates": true
+                    },
+                    "secrets": [],
+                    "adminPassword": "[parameters('virtualMachines_KubeWin02_adminPassword')]"
+                },
+                "networkProfile": {
+                    "networkInterfaces": [
+                        {
+                            "properties": {
+                                "primary": true
+                            },
+                            "id": "[resourceId('Microsoft.Network/networkInterfaces', parameters('networkInterfaces_Ethernet3_name'))]"
+                        },
+                        {
+                            "properties": {
+                                "primary": false
+                            },
+                            "id": "[resourceId('Microsoft.Network/networkInterfaces', parameters('networkInterfaces_Ethernet4_name'))]"
+                        }
+                    ]
+                }
+            },
+            "resources": [],
+            "dependsOn": [
+                "[resourceId('Microsoft.Storage/storageAccounts', parameters('storageAccounts_azurekubestore_name'))]",
+                "[resourceId('Microsoft.Network/networkInterfaces', parameters('networkInterfaces_Ethernet3_name'))]",
+                "[resourceId('Microsoft.Network/networkInterfaces', parameters('networkInterfaces_Ethernet4_name'))]"
+            ]
+        },
+        {
+            "comments": "Generalized from resource: '/subscriptions/1d7f6778-2765-4665-aecb-ef6d19443eef/resourceGroups/AzureKubeDemo/providers/Microsoft.Network/networkInterfaces/Ethernet1'.",
+            "type": "Microsoft.Network/networkInterfaces",
+            "name": "[parameters('networkInterfaces_Ethernet1_name')]",
+            "apiVersion": "2016-03-30",
+            "location": "eastus",
+            "properties": {
+                "ipConfigurations": [
+                    {
+                        "name": "ipconfig1",
+                        "properties": {
+                            "privateIPAddress": "10.0.1.10",
+                            "privateIPAllocationMethod": "Static",
+                            "publicIPAddress": {
+                                "id": "[resourceId('Microsoft.Network/publicIPAddresses', parameters('publicIPAddresses_Ethernet1_name'))]"
+                            },
+                            "subnet": {
+                                "id": "[concat(resourceId('Microsoft.Network/virtualNetworks', parameters('virtualNetworks_AzureKubeNet_name')), '/subnets/default')]"
+                            }
+                        }
+                    }
+                ],
+                "dnsSettings": {
+                    "dnsServers": []
+                },
+                "enableIPForwarding": true
+            },
+            "resources": [],
+            "dependsOn": [
+                "[resourceId('Microsoft.Network/publicIPAddresses', parameters('publicIPAddresses_Ethernet1_name'))]",
+                "[resourceId('Microsoft.Network/virtualNetworks', parameters('virtualNetworks_AzureKubeNet_name'))]"
+            ]
+        },
+        {
+            "comments": "Generalized from resource: '/subscriptions/1d7f6778-2765-4665-aecb-ef6d19443eef/resourceGroups/AzureKubeDemo/providers/Microsoft.Network/networkInterfaces/Ethernet2'.",
+            "type": "Microsoft.Network/networkInterfaces",
+            "name": "[parameters('networkInterfaces_Ethernet2_name')]",
+            "apiVersion": "2016-03-30",
+            "location": "eastus",
+            "properties": {
+                "ipConfigurations": [
+                    {
+                        "name": "ipconfig1",
+                        "properties": {
+                            "privateIPAddress": "10.0.1.11",
+                            "privateIPAllocationMethod": "Static",
+                            "subnet": {
+                                "id": "[concat(resourceId('Microsoft.Network/virtualNetworks', parameters('virtualNetworks_AzureKubeNet_name')), '/subnets/default')]"
+                            }
+                        }
+                    }
+                ],
+                "dnsSettings": {
+                    "dnsServers": []
+                },
+                "enableIPForwarding": true
+            },
+            "resources": [],
+            "dependsOn": [
+                "[resourceId('Microsoft.Network/virtualNetworks', parameters('virtualNetworks_AzureKubeNet_name'))]"
+            ]
+        },
+        {
+            "comments": "Generalized from resource: '/subscriptions/1d7f6778-2765-4665-aecb-ef6d19443eef/resourceGroups/AzureKubeDemo/providers/Microsoft.Network/networkInterfaces/Ethernet3'.",
+            "type": "Microsoft.Network/networkInterfaces",
+            "name": "[parameters('networkInterfaces_Ethernet3_name')]",
+            "apiVersion": "2016-03-30",
+            "location": "eastus",
+            "properties": {
+                "ipConfigurations": [
+                    {
+                        "name": "ipconfig1",
+                        "properties": {
+                            "privateIPAddress": "10.0.1.12",
+                            "privateIPAllocationMethod": "Static",
+                            "publicIPAddress": {
+                                "id": "[resourceId('Microsoft.Network/publicIPAddresses', parameters('publicIPAddresses_Ethernet3_name'))]"
+                            },
+                            "subnet": {
+                                "id": "[concat(resourceId('Microsoft.Network/virtualNetworks', parameters('virtualNetworks_AzureKubeNet_name')), '/subnets/default')]"
+                            }
+                        }
+                    }
+                ],
+                "dnsSettings": {
+                    "dnsServers": []
+                },
+                "enableIPForwarding": true
+            },
+            "resources": [],
+            "dependsOn": [
+                "[resourceId('Microsoft.Network/publicIPAddresses', parameters('publicIPAddresses_Ethernet3_name'))]",
+                "[resourceId('Microsoft.Network/virtualNetworks', parameters('virtualNetworks_AzureKubeNet_name'))]"
+            ]
+        },
+        {
+            "comments": "Generalized from resource: '/subscriptions/1d7f6778-2765-4665-aecb-ef6d19443eef/resourceGroups/AzureKubeDemo/providers/Microsoft.Network/networkInterfaces/Ethernet4'.",
+            "type": "Microsoft.Network/networkInterfaces",
+            "name": "[parameters('networkInterfaces_Ethernet4_name')]",
+            "apiVersion": "2016-03-30",
+            "location": "eastus",
+            "properties": {
+                "ipConfigurations": [
+                    {
+                        "name": "ipconfig1",
+                        "properties": {
+                            "privateIPAddress": "10.0.1.13",
+                            "privateIPAllocationMethod": "Static",
+                            "subnet": {
+                                "id": "[concat(resourceId('Microsoft.Network/virtualNetworks', parameters('virtualNetworks_AzureKubeNet_name')), '/subnets/default')]"
+                            }
+                        }
+                    }
+                ],
+                "dnsSettings": {
+                    "dnsServers": []
+                },
+                "enableIPForwarding": true
+            },
+            "resources": [],
+            "dependsOn": [
+                "[resourceId('Microsoft.Network/virtualNetworks', parameters('virtualNetworks_AzureKubeNet_name'))]"
+            ]
+        },
+        {
+            "comments": "Generalized from resource: '/subscriptions/1d7f6778-2765-4665-aecb-ef6d19443eef/resourceGroups/AzureKubeDemo/providers/Microsoft.Network/networkInterfaces/Ethernet5'.",
+            "type": "Microsoft.Network/networkInterfaces",
+            "name": "[parameters('networkInterfaces_Ethernet5_name')]",
+            "apiVersion": "2016-03-30",
+            "location": "eastus",
+            "properties": {
+                "ipConfigurations": [
+                    {
+                        "name": "ipconfig1",
+                        "properties": {
+                            "privateIPAddress": "10.0.1.14",
+                            "privateIPAllocationMethod": "Static",
+                            "publicIPAddress": {
+                                "id": "[resourceId('Microsoft.Network/publicIPAddresses', parameters('publicIPAddresses_Ethernet5_name'))]"
+                            },
+                            "subnet": {
+                                "id": "[concat(resourceId('Microsoft.Network/virtualNetworks', parameters('virtualNetworks_AzureKubeNet_name')), '/subnets/default')]"
+                            }
+                        }
+                    }
+                ],
+                "dnsSettings": {
+                    "dnsServers": []
+                },
+                "enableIPForwarding": true
+            },
+            "resources": [],
+            "dependsOn": [
+                "[resourceId('Microsoft.Network/publicIPAddresses', parameters('publicIPAddresses_Ethernet5_name'))]",
+                "[resourceId('Microsoft.Network/virtualNetworks', parameters('virtualNetworks_AzureKubeNet_name'))]"
+            ]
+        },
+        {
+            "comments": "Generalized from resource: '/subscriptions/1d7f6778-2765-4665-aecb-ef6d19443eef/resourceGroups/AzureKubeDemo/providers/Microsoft.Network/publicIPAddresses/Ethernet1'.",
+            "type": "Microsoft.Network/publicIPAddresses",
+            "name": "[parameters('publicIPAddresses_Ethernet1_name')]",
+            "apiVersion": "2016-03-30",
+            "location": "eastus",
+            "properties": {
+                "publicIPAllocationMethod": "Dynamic",
+                "idleTimeoutInMinutes": 4
+            },
+            "resources": [],
+            "dependsOn": []
+        },
+        {
+            "comments": "Generalized from resource: '/subscriptions/1d7f6778-2765-4665-aecb-ef6d19443eef/resourceGroups/AzureKubeDemo/providers/Microsoft.Network/publicIPAddresses/Ethernet3'.",
+            "type": "Microsoft.Network/publicIPAddresses",
+            "name": "[parameters('publicIPAddresses_Ethernet3_name')]",
+            "apiVersion": "2016-03-30",
+            "location": "eastus",
+            "properties": {
+                "publicIPAllocationMethod": "Dynamic",
+                "idleTimeoutInMinutes": 4
+            },
+            "resources": [],
+            "dependsOn": []
+        },
+        {
+            "comments": "Generalized from resource: '/subscriptions/1d7f6778-2765-4665-aecb-ef6d19443eef/resourceGroups/AzureKubeDemo/providers/Microsoft.Network/publicIPAddresses/Ethernet5'.",
+            "type": "Microsoft.Network/publicIPAddresses",
+            "name": "[parameters('publicIPAddresses_Ethernet5_name')]",
+            "apiVersion": "2016-03-30",
+            "location": "eastus",
+            "properties": {
+                "publicIPAllocationMethod": "Dynamic",
+                "idleTimeoutInMinutes": 4
+            },
+            "resources": [],
+            "dependsOn": []
+        },
+        {
+            "comments": "Generalized from resource: '/subscriptions/1d7f6778-2765-4665-aecb-ef6d19443eef/resourceGroups/AzureKubeDemo/providers/Microsoft.Network/routeTables/UDR-Win01'.",
+            "type": "Microsoft.Network/routeTables",
+            "name": "[parameters('routeTables_UDR_Win01_name')]",
+            "apiVersion": "2016-03-30",
+            "location": "eastus",
+            "properties": {
+                "routes": [
+                    {
+                        "name": "RouteToWin01",
+                        "properties": {
+                            "addressPrefix": "192.168.1.0/24",
+                            "nextHopType": "VirtualAppliance",
+                            "nextHopIpAddress": "10.0.1.10"
+                        }
+                    },
+                    {
+                        "name": "RouteToWin02",
+                        "properties": {
+                            "addressPrefix": "192.168.2.0/24",
+                            "nextHopType": "VirtualAppliance",
+                            "nextHopIpAddress": "10.0.1.12"
+                        }
+                    },
+                    {
+                        "name": "RouteToLin01",
+                        "properties": {
+                            "addressPrefix": "192.168.0.0/24",
+                            "nextHopType": "VirtualAppliance",
+                            "nextHopIpAddress": "10.0.1.14"
+                        }
+                    }
+                ]
+            },
+            "resources": [],
+            "dependsOn": []
+        },
+        {
+            "comments": "Generalized from resource: '/subscriptions/1d7f6778-2765-4665-aecb-ef6d19443eef/resourceGroups/AzureKubeDemo/providers/Microsoft.Network/virtualNetworks/AzureKubeNet'.",
+            "type": "Microsoft.Network/virtualNetworks",
+            "name": "[parameters('virtualNetworks_AzureKubeNet_name')]",
+            "apiVersion": "2016-03-30",
+            "location": "eastus",
+            "properties": {
+                "addressSpace": {
+                    "addressPrefixes": [
+                        "10.0.1.0/24"
+                    ]
+                },
+                "dhcpOptions": {
+                    "dnsServers": []
+                },
+                "subnets": [
+                    {
+                        "name": "default",
+                        "properties": {
+                            "addressPrefix": "10.0.1.0/24",
+                            "routeTable": {
+                                "id": "[resourceId('Microsoft.Network/routeTables', parameters('routeTables_UDR_Win01_name'))]"
+                            }
+                        }
+                    }
+                ]
+            },
+            "resources": [],
+            "dependsOn": [
+                "[resourceId('Microsoft.Network/routeTables', parameters('routeTables_UDR_Win01_name'))]"
+            ]
+        },
+        {
+            "comments": "Generalized from resource: '/subscriptions/1d7f6778-2765-4665-aecb-ef6d19443eef/resourceGroups/azurekubedemo/providers/Microsoft.Storage/storageAccounts/azurekubestore'.",
+            "type": "Microsoft.Storage/storageAccounts",
+            "sku": {
+                "name": "Standard_GRS",
+                "tier": "Standard"
+            },
+            "kind": "Storage",
+            "name": "[parameters('storageAccounts_azurekubestore_name')]",
+            "apiVersion": "2016-01-01",
+            "location": "eastus",
+            "tags": {},
+            "properties": {},
+            "resources": [],
+            "dependsOn": []
+        }
+    ]
+}
