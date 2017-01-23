@@ -3,7 +3,7 @@ The files directories and subdirectors in this folder are intended to setup demo
 # Directory Details
 ```
 azure - This Directory
-|  deploy.ps1 - Powershell script for running Azure resoure manager deployments. 
+|  deploy.ps1 - PowerShell script for running Azure resoure manager deployments. 
 |  deploy.sh - sh script for running Azure resource manager deployments from linux.
 |  deployer.rb -  module for running Azure resoure manager deployments from ruby.
 |  DeploymentHelper.cs - class for running Azure resource manager deployments from .NET.
@@ -19,8 +19,8 @@ azure - This Directory
 |   |  installGo.sh - script to install Go.
 |   |  installKubernetes.sh - script to install Kubernetes.
 |   |  parameters.json - parameters to be applied to the resource manager template.
-|   |  postDeploy.ps - Powershell script to setup Kubernetes and its dependencies against a running Centos node.
-|   |  postDeployStepByStep.ps1 - Powershell script to setup Kubernetes and its dependencies against a running Centos node, with pauses between steps.
+|   |  postDeploy.ps - PowerShell script to setup Kubernetes and its dependencies against a running Centos node.
+|   |  postDeployStepByStep.ps1 - PowerShell script to setup Kubernetes and its dependencies against a running Centos node, with pauses between steps.
 |   |  setupYum.sh - script to setup yum and yum-utils to pull Kubernetes dependencies.
 |   |  template.json - template defining a single CentOS deployment.
 |
@@ -43,17 +43,21 @@ The attached ARM template creates a Kubernetes cluster with 1 Linux node (KubeLi
 * AzureKubeStore - Storage account used for the containers
 
 # Create an Individual Linux node
+## Prerequisites
+* [Putty](http://www.chiark.greenend.org.uk/~sgtatham/putty/latest.html)
+* [Get Started with Azure PowerShell cmdlets](https://docs.microsoft.com/en-us/powershell/azureps-cmdlets-docs/)
+## Creating a Linux node in Azure
 1.  Modify the ```./LinuxNode/parameters.json``` file.
 2.  Log into Azure Resource Manager.
-     ```Powershell
+     ```PowerShell
      Login-AzureRmAccount
      ```
 4.  Run the deploy.ps1 script against the template and parameters json files.
-     ```Powershell
+     ```PowerShell
      .\deploy.ps1 -subscriptionId (Get-AzureRmContext).Subscription.SubscriptionId -resourceGroupName KubeDemo -resourceGroupLocation "East US 2" -deploymentName KubeDemo -templateFilePath .\LinuxNode\template.json -parametersFilePath .\LinuxNode\parameters.json
      ```
 5.  Run the postDeploy.ps1 or postDeployStepByStep.ps1 script with the server IP that was just created.
-    ```Powershell
+    ```PowerShell
     .\LinuxNode\postDeploy.ps1 -server <IP Address>
 
     .\LinuxNode\postDeployStepByStep.ps1 -server <IP Address>
@@ -63,11 +67,11 @@ The attached ARM template creates a Kubernetes cluster with 1 Linux node (KubeLi
 # Create an individual Windows node
 1.  Modify the ```./WindowsNode.json``` file.
 2.  Log into Azure Resource Manager.
-     ```Powershell
+     ```PowerShell
      Login-AzureRmAccount
      ```
 4.  Run the deploy.ps1 script against the template and parameters json files.
-     ```Powershell
+     ```PowerShell
      .\deploy.ps1 -subscriptionId (Get-AzureRmContext).Subscription.SubscriptionId -resourceGroupName KubeDemo -resourceGroupLocation "East US 2" -deploymentName KubeDemo -templateFilePath .\WindowsNode\template.json -parametersFilePath .\WindowsNode\parameters.json
      ```
 5.  Complete the setup of the Windows Server 2016 nodes per the Kubernetes [Windows Server Containers](https://kubernetes.io/docs/getting-started-guides/windows/) documentation.
