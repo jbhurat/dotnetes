@@ -56,7 +56,7 @@
         }
     },
     "variables": {
-        "apiVersion": "2015-06-15"
+        "apiVersion": "2016-03-30"
     },
     "resources": [
         {
@@ -113,7 +113,7 @@
                     ]
                 }
             },
-            /* //TODO Configure WinRM or Possibly Install Docker"resources": [
+            "resources": []/* TODO[
                 {
                     "type": "Microsoft.Compute/virtualMachines/extensions",
                     "name": "[concat(variables('vmName'),'/WinRMCustomScriptExtension')]",
@@ -136,7 +136,7 @@
                         }
                     }
                 }
-            ],*/
+            ]*/,
             "dependsOn": [
                 "[resourceId('Microsoft.Storage/storageAccounts', parameters('storageAccountName'))]",
                 "[resourceId('Microsoft.Network/networkInterfaces', parameters('ethernet1Name'))]",
