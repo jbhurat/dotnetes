@@ -71,14 +71,14 @@
             "type": "String"
         }
     },
-    "variables": {},
+    "variables": { "apiVersion": "2015-06-15" },
     "resources": [
         {
             "comments": "Generalized from resource: '/subscriptions/1d7f6778-2765-4665-aecb-ef6d19443eef/resourceGroups/AzureKubeDemo/providers/Microsoft.Compute/virtualMachines/KubeLin01'.",
             "type": "Microsoft.Compute/virtualMachines",
             "name": "[parameters('virtualMachines_KubeLin01_name')]",
             "apiVersion": "2015-06-15",
-            "location": "eastus",
+            "location": "[resourceGroup().location]",
             "properties": {
                 "hardwareProfile": {
                     "vmSize": "Standard_D2"
@@ -131,7 +131,7 @@
             "type": "Microsoft.Compute/virtualMachines",
             "name": "[parameters('virtualMachines_KubeWin01_name')]",
             "apiVersion": "2015-06-15",
-            "location": "eastus",
+            "location": "[resourceGroup().location]",
             "properties": {
                 "hardwareProfile": {
                     "vmSize": "Standard_D2"
@@ -140,8 +140,8 @@
                     "imageReference": {
                         "publisher": "MicrosoftWindowsServer",
                         "offer": "WindowsServer",
-                        "sku": "2016-Technical-Preview-with-Containers",
-                        "version": "5.0.20160920"
+                        "sku": "2016-Datacenter-with-Containers",
+                        "version": "2016.0.20161025"
                     },
                     "osDisk": {
                         "name": "[concat(parameters('virtualMachines_KubeWin01_name'),'OSDisk')]",
@@ -192,7 +192,7 @@
             "type": "Microsoft.Compute/virtualMachines",
             "name": "[parameters('virtualMachines_KubeWin02_name')]",
             "apiVersion": "2015-06-15",
-            "location": "eastus",
+            "location": "[resourceGroup().location]",
             "properties": {
                 "hardwareProfile": {
                     "vmSize": "Standard_D2"
@@ -201,8 +201,8 @@
                     "imageReference": {
                         "publisher": "MicrosoftWindowsServer",
                         "offer": "WindowsServer",
-                        "sku": "2016-Technical-Preview-with-Containers",
-                        "version": "5.0.20160920"
+                        "sku": "2016-Datacenter-with-Containers",
+                        "version": "2016.0.20161025"
                     },
                     "osDisk": {
                         "name": "[concat(parameters('virtualMachines_KubeWin02_name'),'OSDisk')]",
@@ -241,7 +241,7 @@
                     ]
                 }
             },
-            "resources": [],
+           "resources": [],
             "dependsOn": [
                 "[resourceId('Microsoft.Storage/storageAccounts', parameters('storageAccounts_azurekubestore_name'))]",
                 "[resourceId('Microsoft.Network/networkInterfaces', parameters('networkInterfaces_Ethernet3_name'))]",
@@ -253,7 +253,7 @@
             "type": "Microsoft.Network/networkInterfaces",
             "name": "[parameters('networkInterfaces_Ethernet1_name')]",
             "apiVersion": "2016-03-30",
-            "location": "eastus",
+            "location": "[resourceGroup().location]",
             "properties": {
                 "ipConfigurations": [
                     {
@@ -286,7 +286,7 @@
             "type": "Microsoft.Network/networkInterfaces",
             "name": "[parameters('networkInterfaces_Ethernet2_name')]",
             "apiVersion": "2016-03-30",
-            "location": "eastus",
+            "location": "[resourceGroup().location]",
             "properties": {
                 "ipConfigurations": [
                     {
@@ -315,7 +315,7 @@
             "type": "Microsoft.Network/networkInterfaces",
             "name": "[parameters('networkInterfaces_Ethernet3_name')]",
             "apiVersion": "2016-03-30",
-            "location": "eastus",
+            "location": "[resourceGroup().location]",
             "properties": {
                 "ipConfigurations": [
                     {
@@ -348,7 +348,7 @@
             "type": "Microsoft.Network/networkInterfaces",
             "name": "[parameters('networkInterfaces_Ethernet4_name')]",
             "apiVersion": "2016-03-30",
-            "location": "eastus",
+            "location": "[resourceGroup().location]",
             "properties": {
                 "ipConfigurations": [
                     {
@@ -377,7 +377,7 @@
             "type": "Microsoft.Network/networkInterfaces",
             "name": "[parameters('networkInterfaces_Ethernet5_name')]",
             "apiVersion": "2016-03-30",
-            "location": "eastus",
+            "location": "[resourceGroup().location]",
             "properties": {
                 "ipConfigurations": [
                     {
@@ -410,7 +410,7 @@
             "type": "Microsoft.Network/publicIPAddresses",
             "name": "[parameters('publicIPAddresses_Ethernet1_name')]",
             "apiVersion": "2016-03-30",
-            "location": "eastus",
+            "location": "[resourceGroup().location]",
             "properties": {
                 "publicIPAllocationMethod": "Dynamic",
                 "idleTimeoutInMinutes": 4
@@ -423,7 +423,7 @@
             "type": "Microsoft.Network/publicIPAddresses",
             "name": "[parameters('publicIPAddresses_Ethernet3_name')]",
             "apiVersion": "2016-03-30",
-            "location": "eastus",
+            "location": "[resourceGroup().location]",
             "properties": {
                 "publicIPAllocationMethod": "Dynamic",
                 "idleTimeoutInMinutes": 4
@@ -436,7 +436,7 @@
             "type": "Microsoft.Network/publicIPAddresses",
             "name": "[parameters('publicIPAddresses_Ethernet5_name')]",
             "apiVersion": "2016-03-30",
-            "location": "eastus",
+            "location": "[resourceGroup().location]",
             "properties": {
                 "publicIPAllocationMethod": "Dynamic",
                 "idleTimeoutInMinutes": 4
@@ -449,7 +449,7 @@
             "type": "Microsoft.Network/routeTables",
             "name": "[parameters('routeTables_UDR_Win01_name')]",
             "apiVersion": "2016-03-30",
-            "location": "eastus",
+            "location": "[resourceGroup().location]",
             "properties": {
                 "routes": [
                     {
@@ -486,7 +486,7 @@
             "type": "Microsoft.Network/virtualNetworks",
             "name": "[parameters('virtualNetworks_AzureKubeNet_name')]",
             "apiVersion": "2016-03-30",
-            "location": "eastus",
+            "location": "[resourceGroup().location]",
             "properties": {
                 "addressSpace": {
                     "addressPrefixes": [
@@ -523,7 +523,7 @@
             "kind": "Storage",
             "name": "[parameters('storageAccounts_azurekubestore_name')]",
             "apiVersion": "2016-01-01",
-            "location": "eastus",
+            "location": "[resourceGroup().location]",
             "tags": {},
             "properties": {},
             "resources": [],
