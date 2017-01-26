@@ -1,0 +1,3 @@
+sudo yum install gcc -y
+go get -u github.com/cloudflare/cfssl/cmd/...
+read -p "Press any key to continue."
